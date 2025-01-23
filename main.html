@@ -1,27 +1,10 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typeahead Search</title>
-    <style>
-        #suggestions-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        #suggestions-list li {
-            padding: 8px;
-            background: #f1f1f1;
-            cursor: pointer;
-        }
-        #suggestions-list li:hover {
-            background: #ddd;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -29,59 +12,7 @@
     <input type="text" id="typeahead" placeholder="Start typing..." />
     <ul id="suggestions-list"></ul>
 
-    <script>
-        // JavaScript code
-        const typeaheadInput = document.getElementById('typeahead');
-        const suggestionsList = document.getElementById('suggestions-list');
-        let debounceTimeout;
-
-        // Function to fetch suggestions from the API
-        async function fetchSuggestions(query) {
-            const response = await fetch(`https://api.frontendexpert.io/api/fe/glossary-suggestions?text=${query}`);
-            const data = await response.json();
-            return data;
-        }
-
-        // Function to handle the typing input event
-        function handleInput(event) {
-            const query = event.target.value.trim();
-
-            // If the input is empty, clear suggestions and return
-            if (!query) {
-                suggestionsList.innerHTML = '';
-                return;
-            }
-
-            // Clear any previous debounce timeout
-            clearTimeout(debounceTimeout);
-
-            // Set up a new debounce timeout to trigger the API call after 500ms
-            debounceTimeout = setTimeout(async () => {
-                const suggestions = await fetchSuggestions(query);
-
-                // Clear previous suggestions
-                suggestionsList.innerHTML = '';
-
-                // Render the new suggestions
-                suggestions.forEach(suggestion => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = suggestion;
-                    listItem.addEventListener('click', () => selectSuggestion(suggestion));
-                    suggestionsList.appendChild(listItem);
-                });
-            }, 500);
-        }
-
-        // Function to select a suggestion and fill the input
-        function selectSuggestion(suggestion) {
-            typeaheadInput.value = suggestion;
-            suggestionsList.innerHTML = ''; // Clear suggestions
-        }
-
-        // Add event listener to the input field for the typing event
-        typeaheadInput.addEventListener('input', handleInput);
-
-    </script>
+    <script src="script.js"></script>
 
 </body>
 </html>
